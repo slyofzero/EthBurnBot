@@ -1,17 +1,10 @@
-import { AGE_THRESHOLD } from "@/utils/constants";
-import { formatToInternational, toTitleCase } from "@/utils/general";
 import { hypeNewPairs, setIndexedTokens } from "@/vars/tokens";
-import { teleBot } from "..";
-import { cleanUpBotMessage, hardCleanUpBotMessage } from "@/utils/bot";
 import { TOKENS_CHANNEL_ID } from "@/utils/env";
 import { errorHandler, log } from "@/utils/handlers";
 import moment from "moment";
 import { PhotonPairData } from "@/types/livePairs";
-import { PublicKey } from "@solana/web3.js";
-import { solanaConnection } from "@/rpc";
 import { trackLpBurn } from "./trackLpBurn";
-import { promoText } from "@/vars/promo";
-import { InlineKeyboard } from "grammy";
+import { AGE_THRESHOLD } from "@/utils/constants";
 
 export async function sendAlert(pairs: PhotonPairData[]) {
   try {
@@ -23,123 +16,131 @@ export async function sendAlert(pairs: PhotonPairData[]) {
     const newIndexedTokens = [];
 
     for (const pair of pairs) {
-      const {
-        created_timestamp,
-        tokenAddress,
-        cur_liq,
-        fdv: marketCap,
-      } = pair.attributes;
+      const { created_timestamp, address, fdv: marketCap } = pair.attributes;
 
-      newIndexedTokens.push(tokenAddress);
+      newIndexedTokens.push(address);
       const age = moment(created_timestamp * 1e3).fromNow();
       const ageMinutes =
         Number(age.replace("minutes ago", "")) ||
         Number(age.replace("a minutes ago", "1")) ||
         Number(age.replace("a few seconds ago", "1"));
 
-      if (hypeNewPairs[tokenAddress]) {
+      if (hypeNewPairs[address]) {
         trackLpBurn(pair);
       } else if (ageMinutes <= AGE_THRESHOLD) {
-        const {
-          address,
-          socials: storedSocials,
-          symbol,
-          name,
-          audit,
-        } = pair.attributes;
-
-        // Links
-        const tokenLink = `https://solscan.io/token/${tokenAddress}`;
-        // const pairLink = `https://solscan.io/account/${address}`;
-        const dexScreenerLink = `https://dexscreener.com/solana/${address}`;
-        const birdEyeLink = `https://birdeye.so/token/${tokenAddress}?chain=solana`;
-        const bonkBotLink = `https://t.me/bonkbot_bot?start=ref_teji6_ca_${tokenAddress}`;
-        const magnumLink = `https://t.me/magnum_trade_bot?start=YIUrOaUs_snipe_${tokenAddress}`;
-        const unibot = `https://t.me/solana_unibot?start=r-reelchasin-${tokenAddress}`;
-        const solBotLink = `https://t.me/SolanaTradingBot?start=${tokenAddress}-6VRAlANiH`;
-        // const bananaLink = `https://t.me/BananaGunSolana_bot?start=${tokenAddress}`;
-        // const photonLink = `https://photon-sol.tinyastro.io/@hunnid/${tokenAddress}`;
-
+        const { address, name, audit } = pair.attributes;
         const now = Math.floor(Date.now() / 1e3);
 
-        const socials = [];
-        for (const [social, socialLink] of Object.entries(
-          storedSocials || {}
-        )) {
-          if (socialLink) {
-            socials.push(`[${toTitleCase(social)}](${socialLink})`);
-          }
-        }
-        const socialsText = socials.join(" \\| ") || "No links available";
-
-        // Token Info
-        const liquidity = cleanUpBotMessage(
-          formatToInternational(cur_liq.quote.toFixed(2))
-        );
-        const liquidityUsd = cleanUpBotMessage(
-          formatToInternational(cur_liq.usd)
-        );
-
-        const totalSupply = (
-          await solanaConnection.getTokenSupply(new PublicKey(tokenAddress))
-        ).value.uiAmount;
-
         // Audit
-        const { lp_burned_perc } = audit;
-        const isLpStatusOkay = lp_burned_perc === 100;
+        const { locked_liquidity } = audit;
+        const isLpStatusOkay =
+          Object.values(locked_liquidity || {}).at(0) === 100;
 
-        // Keyboard
-        const keyboard = new InlineKeyboard()
-          .url("💳 BONKBot", bonkBotLink)
-          .url("🟣 SolBot", solBotLink)
-          .row()
-          .url("🔫 Magnum", magnumLink)
-          .url("🦄 Unibot", unibot);
+        hypeNewPairs[address] = {
+          startTime: now,
+          initialMC: marketCap,
+          pastBenchmark: 1,
+          lpStatus: isLpStatusOkay,
+        };
+
+        log(`Caught token ${address} ${name}`);
+
+        // // Links
+        // const tokenLink = `https://etherscan.io/address/${address}`;
+        // // const pairLink = `https://solscan.io/account/${address}`;
+        // const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
+        // const birdEyeLink = `https://birdeye.so/token/${address}?chain=ethereum`;
+        // const bonkBotLink = `https://t.me/bonkbot_bot?start=ref_teji6_ca_${address}`;
+        // const magnumLink = `https://t.me/magnum_trade_bot?start=YIUrOaUs_snipe_${address}`;
+        // const unibot = `https://t.me/unibotsniper_bot?start=whaleape-${address}`;
+        // const maestroBot = `https://t.me/MaestroSniperBot?start=${address}`;
+        // const bananaLink = `https://t.me/BananaGunSolana_bot?start=${address}`;
+        // const photonLink = `https://photon-sol.tinyastro.io/@hunnid/${address}`;
+
+        // const socials = [];
+        // for (const [social, socialLink] of Object.entries(
+        //   storedSocials || {}
+        // )) {
+        //   if (socialLink) {
+        //     socials.push(`[${toTitleCase(social)}](${socialLink})`);
+        //   }
+        // }
+
+        // const socialsText = socials.join(" \\| ") || "No links available";
+
+        // const contractInstance = new ethers.Contract(
+        //   address,
+        //   TOKEN_ABI,
+        //   provider
+        // );
+
+        // // Token Info
+        // const initialLiquidity = cleanUpBotMessage(
+        //   formatToInternational(Number(init_liq.eth).toFixed(2))
+        // );
+        // const initialLiquidityUsd = cleanUpBotMessage(
+        //   formatToInternational(init_liq.eth)
+        // );
+
+        // const liquidity = cleanUpBotMessage(
+        //   formatToInternational(Number(cur_liq.eth).toFixed(2))
+        // );
+        // const liquidityUsd = cleanUpBotMessage(
+        //   formatToInternational(cur_liq.usd)
+        // );
+        // const totalSupply = await contractInstance.totalSupply();
+
+        // // Keyboard
+        // const keyboard = new InlineKeyboard()
+        //   .url("💳 BONKBot", bonkBotLink)
+        //   .url("🛒 Maestro", maestroBot)
+        //   .row()
+        //   .url("🔫 Magnum", magnumLink)
+        //   .url("🦄 Unibot", unibot);
         // .url("🍌 BananaGun", bananaLink)
         // .row()
         // .url("⚡ Photon", photonLink);
 
-        // Text
-        const text = `${hardCleanUpBotMessage(
-          name
-        )} \\| [${hardCleanUpBotMessage(symbol)}](${tokenLink})
-      
-🪙 Supply: ${cleanUpBotMessage(formatToInternational(totalSupply || 0))}
-💰 MCap: $${cleanUpBotMessage(formatToInternational(marketCap))}
-🏦 Lp SOL: ${liquidity} SOL *\\($${liquidityUsd}\\)*
+        //         // Text
+        //         const text = `${hardCleanUpBotMessage(
+        //           name
+        //         )} \\| [${hardCleanUpBotMessage(symbol)}](${tokenLink})
 
-Token Contract: 
-\`${tokenAddress}\`
+        // 🪙 Supply: ${cleanUpBotMessage(formatToInternational(totalSupply || 0))}
+        // 💰 MCap: $${cleanUpBotMessage(formatToInternational(marketCap))}
+        // 🏦 Lp ETH: ${liquidity} ETH *\\($${liquidityUsd}\\)*
+        // 🏦 Initial LP ETH: ${initialLiquidity} ETH *\\($${initialLiquidityUsd}\\)*
 
-🫧 Socials: ${socialsText}
-🔗 Links: [DexScreener](${dexScreenerLink}) \\| [BirdEye](${birdEyeLink}) \\| [SolScan](${tokenLink})
-${promoText}`;
+        // Token Contract:
+        // \`${address}\`
 
-        try {
-          const message = await teleBot.api.sendMessage(
-            TOKENS_CHANNEL_ID,
-            text,
-            {
-              parse_mode: "MarkdownV2",
-              // @ts-expect-error Param not found
-              disable_web_page_preview: true,
-              reply_markup: keyboard,
-            }
-          );
+        // 🫧 Socials: ${socialsText}
+        // 🔗 Links: [DexScreener](${dexScreenerLink}) \\| [BirdEye](${birdEyeLink}) \\| [EtherScan](${tokenLink})
+        // ${promoText}`;
 
-          hypeNewPairs[tokenAddress] = {
-            startTime: now,
-            initialMC: marketCap,
-            pastBenchmark: 1,
-            launchMessage: message.message_id,
-            lpStatus: isLpStatusOkay,
-          };
+        // try {
+        //   // const message = await teleBot.api.sendMessage(
+        //   //   TOKENS_CHANNEL_ID,
+        //   //   text,
+        //   //   {
+        //   //     parse_mode: "MarkdownV2",
+        //   //     // @ts-expect-error Param not found
+        //   //     disable_web_page_preview: true,
+        //   //     reply_markup: keyboard,
+        //   //   }
+        //   // );
 
-          log(`Sent message for ${address} ${name}`);
-        } catch (error) {
-          log(text);
-          errorHandler(error);
-        }
+        //   hypeNewPairs[address] = {
+        //     startTime: now,
+        //     initialMC: marketCap,
+        //     pastBenchmark: 1,
+        //     lpStatus: isLpStatusOkay,
+        //   };
+
+        //   log(`Caught token ${address} ${name}`);
+        // } catch (error) {
+        //   errorHandler(error);
+        // }
       }
     }
 

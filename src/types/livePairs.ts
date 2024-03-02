@@ -1,20 +1,20 @@
 interface InitLiq {
+  eth: string;
   usd: string;
-  quote: string;
   lp_amount: number;
   timestamp: number;
   open_timestamp: number;
 }
 
 interface CurLiq {
-  quote: number;
+  eth: string;
   usd: string;
 }
 
 interface Audit {
   mint_authority: boolean;
-  lp_burned_perc: number;
-  top_holders_perc: number;
+  locked_liquidity: { [key: number]: number };
+  lp_holders_count: number;
 }
 
 interface Socials {
@@ -30,7 +30,6 @@ interface Attributes {
   buys_count: number;
   sells_count: number;
   address: string;
-  tokenAddress: string;
   fdv: number;
   name: string;
   symbol: string;
