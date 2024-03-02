@@ -115,7 +115,7 @@ ${promoText}`;
           // @ts-expect-error Param not found
           disable_web_page_preview: true,
         })
-        .then(() => log(`Sent message for ${address}`))
+        .then(() => log(`LP locked for ${address}`))
         .catch((e) => {
           log(text);
           errorHandler(e);
