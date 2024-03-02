@@ -7,6 +7,8 @@ import { trackLpBurn } from "./trackLpBurn";
 import { AGE_THRESHOLD } from "@/utils/constants";
 
 export async function sendAlert(pairs: PhotonPairData[]) {
+  log(`Caught ${pairs.length} pairs`);
+
   try {
     if (!TOKENS_CHANNEL_ID) {
       log("TOKENS_CHANNEL_ID is undefined");
