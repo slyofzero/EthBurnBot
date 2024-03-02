@@ -41,13 +41,14 @@ export async function trackLpBurn(pair: PhotonPairData) {
       const tokenLink = `https://etherscan.io/address/${address}`;
       const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
       const birdEyeLink = `https://birdeye.so/token/${address}?chain=ethereum`;
-      const bonkBotLink = `https://t.me/bonkbot_bot?start=ref_teji6_ca_${address}`;
+      // const bonkBotLink = `https://t.me/bonkbot_bot?start=ref_teji6_ca_${address}`;
       const magnumLink = `https://t.me/magnum_trade_bot?start=YIUrOaUs_snipe_${address}`;
       const unibot = `https://t.me/unibotsniper_bot?start=whaleape-${address}`;
       const maestroBot = `https://t.me/MaestroSniperBot?start=${address}`;
+      const bananaLink = `https://t.me/BananaGunSniper_bot?start=snp_whaleape_${address}`;
 
       const keyboard = new InlineKeyboard()
-        .url("💳 BONKBot", bonkBotLink)
+        .url("🍌 BananaGun", bananaLink)
         .url("🛒 Maestro", maestroBot)
         .row()
         .url("🔫 Magnum", magnumLink)
