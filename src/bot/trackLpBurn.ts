@@ -63,7 +63,9 @@ export async function trackLpBurn(pair: PhotonPairData) {
             )}](${socialLink})`;
           }
         }
-      } else {
+      }
+
+      if (socialsText === "📱 *Socials*") {
         socialsText += `\n       *├─* No Links Available`;
       }
 
