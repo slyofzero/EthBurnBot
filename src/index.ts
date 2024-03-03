@@ -36,7 +36,7 @@ log("Bot instance ready");
     } catch (error) {
       errorHandler(error);
     } finally {
-      setTimeout(toRepeat, 60 * 1e3);
+      setTimeout(toRepeat, 5 * 1e3);
     }
 
     setInterval(cleanUpHypePairs, 60 * 1e3);

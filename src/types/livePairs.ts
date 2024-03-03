@@ -30,7 +30,7 @@ interface Attributes {
   buys_count: number;
   sells_count: number;
   address: string;
-  fdv: number;
+  fdv: string;
   name: string;
   symbol: string;
   created_timestamp: number;

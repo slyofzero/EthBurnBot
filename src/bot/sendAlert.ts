@@ -40,7 +40,7 @@ export async function sendAlert(pairs: PhotonPairData[]) {
 
         hypeNewPairs[address] = {
           startTime: now,
-          initialMC: marketCap,
+          initialMC: Number(marketCap),
           pastBenchmark: 1,
           lpStatus: isLpStatusOkay,
           launchMessage: 0,

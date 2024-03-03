@@ -79,7 +79,7 @@ export async function trackLpBurn(pair: PhotonPairData) {
       const liquidityUsd = cleanUpBotMessage(
         formatToInternational(cur_liq.usd)
       );
-      const change = (mcap / initialMC).toFixed(2);
+      const change = (Number(mcap) / initialMC).toFixed(2);
 
       const text = `🔥 *New Liquidity Burn for ${hardCleanUpBotMessage(
         symbol

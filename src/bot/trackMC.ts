@@ -18,12 +18,11 @@ export async function trackMC() {
     for (const token in hypeNewPairs) {
       const pairData = (
         await apiFetcher(
-          `https://api.dexscreener.com/latest/dex/tokens/${token}`
+          `https://api.dexscreener.com/latest/dex/pairs/ethereum/${token}`
         )
       ).data as PairDataResponse;
 
       const firstPair = pairData.pairs?.at(0);
-
       if (!firstPair) return delete hypeNewPairs[token];
 
       const {
