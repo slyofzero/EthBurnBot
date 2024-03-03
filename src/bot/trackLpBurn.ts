@@ -26,17 +26,12 @@ export async function trackLpBurn(pair: PhotonPairData) {
     } = pair.attributes;
 
     const { locked_liquidity, lp_holders_count } = audit;
-    const { lpStatus, initialMC, ...rest } = hypeNewPairs[address];
+    const { lpStatus, initialMC, launchMessage, ...rest } =
+      hypeNewPairs[address];
     const lpLocked = Object.values(locked_liquidity || {}).at(0) || 0;
     const isLpStatusOkay = lpLocked === 100;
 
     if (!lpStatus && isLpStatusOkay) {
-      hypeNewPairs[address] = {
-        lpStatus: true,
-        initialMC,
-        ...rest,
-      };
-
       // Links
       const tokenLink = `https://etherscan.io/address/${address}`;
       const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
@@ -118,7 +113,15 @@ ${promoText}`;
           // @ts-expect-error Param not found
           disable_web_page_preview: true,
         })
-        .then(() => log(`LP locked for ${address}`))
+        .then((message) => {
+          hypeNewPairs[address] = {
+            lpStatus: true,
+            initialMC,
+            launchMessage: message.message_id || launchMessage,
+            ...rest,
+          };
+          log(`LP locked for ${address}`);
+        })
         .catch((e) => {
           log(text);
           errorHandler(e);

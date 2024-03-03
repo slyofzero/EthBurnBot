@@ -43,6 +43,7 @@ export async function sendAlert(pairs: PhotonPairData[]) {
           initialMC: marketCap,
           pastBenchmark: 1,
           lpStatus: isLpStatusOkay,
+          launchMessage: 0,
         };
 
         log(`Caught token ${address} ${name}`);
