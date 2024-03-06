@@ -95,7 +95,6 @@ export async function trackMC() {
           teleBot.api
             .sendMessage(-1001994100255, text, {
               parse_mode: "MarkdownV2",
-              reply_markup: keyboard,
               // @ts-expect-error Param not found
               disable_web_page_preview: true,
             })
