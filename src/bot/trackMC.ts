@@ -66,7 +66,7 @@ export async function trackMC() {
           // Links
           const tokenLink = `https://solscan.io/token/${tokenAddress}`;
           const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
-          const birdEyeLink = `https://birdeye.so/token/${address}?chain=ethereum`;
+          const dexToolsLink = `https://www.dextools.io/app/en/solana/pair-explorer/${address}`;
 
           const text = `Powered By [VolumizerBurnBot](https://t.me/VolumizerBurnBot)
 
@@ -77,7 +77,7 @@ export async function trackMC() {
 💲 MC when found: $${cleanUpBotMessage(formatToInternational(initialMC))}
 💲 MC now: $${cleanUpBotMessage(formatToInternational(currentMC))}
 
-[DexScreener](${dexScreenerLink}) \\| [BirdEye](${birdEyeLink})${promoText}`;
+[DexScreener](${dexScreenerLink}) \\| [DexTools](${dexToolsLink})${promoText}`;
 
           teleBot.api
             .sendMessage(TOKENS_CHANNEL_ID, text, {
