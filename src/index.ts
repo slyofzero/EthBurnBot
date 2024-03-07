@@ -7,6 +7,7 @@ import { PhotonPairs } from "./types/livePairs";
 import { configureWeb3 } from "./rpc";
 import { cleanUpHypePairs } from "./bot/cleanUpHypePairs";
 import { trackMC } from "./bot/trackMC";
+import { trackTax } from "./bot/trackTax";
 
 if (!BOT_TOKEN || !DATA_URL) {
   log("BOT_TOKEN or WSS_URL or DATA_URL is missing");
@@ -42,4 +43,5 @@ log("Bot instance ready");
 
   toRepeat();
   setInterval(cleanUpHypePairs, 60 * 1e3);
+  setInterval(trackTax, 15 * 60 * 1e3);
 })();
