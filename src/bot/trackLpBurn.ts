@@ -40,7 +40,7 @@ export async function trackLpBurn(pair: PhotonPairData) {
       const unibot = `https://t.me/unibotsniper_bot?start=whaleape-${address}`;
       const maestroBot = `https://t.me/MaestroSniperBot?start=${address}`;
       const bananaLink = `https://t.me/BananaGunSniper_bot?start=snp_whaleape_${address}`;
-      const dexToolsLink = `https://www.dextools.io/app/en/solana/pair-explorer/${address}`;
+      const dexToolsLink = `https://www.dextools.io/app/en/ether/pair-explorer/${address}`;
 
       const keyboard = new InlineKeyboard()
         .url("🍌 BananaGun", bananaLink)

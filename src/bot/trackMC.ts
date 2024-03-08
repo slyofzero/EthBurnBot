@@ -66,7 +66,7 @@ export async function trackMC() {
           // Links
           const tokenLink = `https://solscan.io/token/${tokenAddress}`;
           const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
-          const dexToolsLink = `https://www.dextools.io/app/en/solana/pair-explorer/${address}`;
+          const dexToolsLink = `https://www.dextools.io/app/en/ether/pair-explorer/${address}`;
 
           const text = `Powered By [VolumizerBurnBot](https://t.me/VolumizerBurnBot)
 
