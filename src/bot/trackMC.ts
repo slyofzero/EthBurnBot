@@ -22,8 +22,6 @@ export async function trackMC() {
         )
       ).data as PairDataResponse;
 
-      console.log(Boolean(pairData));
-
       const firstPair = pairData.pairs?.at(0);
       if (!firstPair) return delete hypeNewPairs[token];
 
