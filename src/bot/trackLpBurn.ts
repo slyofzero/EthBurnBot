@@ -120,24 +120,24 @@ ${promoText}`;
             launchMessage: message.message_id || launchMessage,
             ...rest,
           };
-          log(`LP locked for ${address}`);
+          log(`LP locked for ${symbol} ${address}`);
         })
         .catch((e) => {
           log(text);
           errorHandler(e);
         });
 
-      teleBot.api
-        .sendMessage(-1001994100255, text, {
-          parse_mode: "MarkdownV2",
-          reply_markup: keyboard,
-          // @ts-expect-error Param not found
-          disable_web_page_preview: true,
-        })
-        .catch((e) => {
-          log(text);
-          errorHandler(e);
-        });
+      // teleBot.api
+      //   .sendMessage(-1001994100255, text, {
+      //     parse_mode: "MarkdownV2",
+      //     reply_markup: keyboard,
+      //     // @ts-expect-error Param not found
+      //     disable_web_page_preview: true,
+      //   })
+      //   .catch((e) => {
+      //     log(text);
+      //     errorHandler(e);
+      //   });
     }
   } catch (error) {
     errorHandler(error);

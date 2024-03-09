@@ -7,8 +7,6 @@ import { trackLpBurn } from "./trackLpBurn";
 import { AGE_THRESHOLD } from "@/utils/constants";
 
 export async function sendAlert(pairs: PhotonPairData[]) {
-  log(`Caught ${pairs.length} pairs`);
-
   try {
     if (!TOKENS_CHANNEL_ID) {
       log("TOKENS_CHANNEL_ID is undefined");
@@ -30,7 +28,7 @@ export async function sendAlert(pairs: PhotonPairData[]) {
       if (hypeNewPairs[address]) {
         trackLpBurn(pair);
       } else if (ageMinutes <= AGE_THRESHOLD) {
-        const { address, name, audit } = pair.attributes;
+        const { address, audit } = pair.attributes;
         const now = Math.floor(Date.now() / 1e3);
 
         // Audit
@@ -45,8 +43,6 @@ export async function sendAlert(pairs: PhotonPairData[]) {
           lpStatus: isLpStatusOkay,
           launchMessage: 0,
         };
-
-        log(`Caught token ${address} ${name}`);
 
         // // Links
         // const tokenLink = `https://etherscan.io/address/${address}`;

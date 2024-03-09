@@ -92,16 +92,16 @@ export async function trackMC() {
               errorHandler(e);
             });
 
-          teleBot.api
-            .sendMessage(-1001994100255, text, {
-              parse_mode: "MarkdownV2",
-              // @ts-expect-error Param not found
-              disable_web_page_preview: true,
-            })
-            .catch((e) => {
-              log(text);
-              errorHandler(e);
-            });
+          // teleBot.api
+          //   .sendMessage(-1001994100255, text, {
+          //     parse_mode: "MarkdownV2",
+          //     // @ts-expect-error Param not found
+          //     disable_web_page_preview: true,
+          //   })
+          //   .catch((e) => {
+          //     log(text);
+          //     errorHandler(e);
+          //   });
         }
       }
     }
