@@ -33,7 +33,7 @@ export async function trackLpBurn(pair: PhotonPairData) {
 
     if (!lpStatus && isLpStatusOkay) {
       // Links
-      const tokenLink = `https://etherscan.io/address/${address}`;
+      const tokenLink = `https://etherscan.io/token/${address}`;
       const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
       // const bonkBotLink = `https://t.me/bonkbot_bot?start=ref_teji6_ca_${address}`;
       const magnumLink = `https://t.me/magnum_trade_bot?start=YIUrOaUs_snipe_${address}`;

@@ -64,7 +64,7 @@ export async function trackMC() {
           };
 
           // Links
-          const tokenLink = `https://solscan.io/token/${tokenAddress}`;
+          const tokenLink = `https://etherscan.io/token/${address}`;
           const dexScreenerLink = `https://dexscreener.com/ethereum/${address}`;
           const dexToolsLink = `https://www.dextools.io/app/en/ether/pair-explorer/${address}`;
 
