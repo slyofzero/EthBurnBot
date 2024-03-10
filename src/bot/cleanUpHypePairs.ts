@@ -10,7 +10,7 @@ export function cleanUpHypePairs() {
     const { startTime } = hypeNewPairs[token];
     const timeDiff = now - startTime;
 
-    if (timeDiff > 24 * 60 * 60) {
+    if (timeDiff > 6 * 60 * 60) {
       // 3 hours in seconds
       tokensToRemove.push(token);
     }
